@@ -1,0 +1,22 @@
+.photo img {
+    width: 40px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.usersQ {
+    display: grid;
+    grid-template-columns: 2fr 8fr;
+    padding: 10px;
+    
+}
+
+.rightSideQ {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+    
+}
+.selected {
+    font-weight: bold;
+}
