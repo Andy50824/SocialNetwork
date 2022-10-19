@@ -3,9 +3,8 @@ import s from './ProfileInfo.module.css';
 
 const ProfileInfo = (props) => {
     if (!props.profile) {
-      return <></>
-    }
-
+      return <></>}
+    
     return (
         <div>
             <div className={s.imageBlock}>

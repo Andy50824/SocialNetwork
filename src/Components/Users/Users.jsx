@@ -2,7 +2,7 @@ import React from 'react';
 import s from './Users.module.css';
 import userPhoto from "../../assets/images/userPhoto.png"
 import {NavLink} from "react-router-dom"
-import {userAPI} from '../../api/usersAPI'
+
 
 let Users = (props) => {
 
@@ -18,7 +18,7 @@ let Users = (props) => {
                             onClick={() => {props.changePages(p)}}>{p}</span>
                 })}
                 </div>
-                {props.usersData.map(u => <div key={u.id} className={s.users}>
+                    {props.usersData.map(u => <div key={u.id} className={s.users}>
                 <div>
                     <div className={s.photo}>
                         <NavLink to={'/profile/'+u.id} key='id'>
@@ -30,25 +30,14 @@ let Users = (props) => {
                         { u.followed 
                         
                         ? <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => { 
-                            props.toggleFollowingProgress(true, u.id)
-                            userAPI.getUnfollow(u.id).then(data => {
-                                    if (data.resultCode === 0) {
-                                        props.unfollow(u.id)
-                                    }
-                                    props.toggleFollowingProgress(false, u.id)
-                                })
+                            
+                            props.setUnfollowing(u.id)
                             
                         }}>unfollow</button>
 
                         : <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => { 
-                            props.toggleFollowingProgress(true, u.id)
-                            userAPI.getFollow(u.id).then(data =>{
-                                    if (data.resultCode === 0) {
-                                        props.follow(u.id)
-                                    }
-                                    props.toggleFollowingProgress(false, u.id)
-                                })
- 
+                            props.setFollowing(u.id)
+
                             }}>follow</button>}   
                         
                     </div>

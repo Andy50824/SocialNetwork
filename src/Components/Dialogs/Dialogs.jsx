@@ -2,6 +2,8 @@ import React from 'react'
 import s from './Dialogs.module.css'
 import DialogsItem from './DialogsItem/DialogsItem'
 import DialogsMessage from './DialogMessage/DialogsMessage'
+import { Navigate } from 'react-router-dom';
+import withAuthRedirect from '../../Hok/withAuthRedirect'
 
 
 const Dialogs = (props) => {
@@ -19,7 +21,7 @@ const Dialogs = (props) => {
 
     let onCheckUpdate = () => {
         let text = newMessageEl.current.value;
-        props.checkUpdate(text)
+        props.newMessage(text)
         
     }
 

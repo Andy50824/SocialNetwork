@@ -1,3 +1,5 @@
+import {userAPI} from "../api/usersAPI"
+
 const followAC = 'FOLLOW'
 const unfollowAC = 'UNFOLLOW'
 const setUsersAC = 'set-users'
@@ -9,7 +11,7 @@ let initialState = {
     usersData: [],
     totalCount: 0,
     pageSize: 10,
-    currentPage: 4,
+    currentPage: 1,
     currentUserId: 1,
     followingInProgress: [],
 };
@@ -45,7 +47,7 @@ const usersReducer = (state = initialState, action) => {
             return {
                 ...state,
                 followingInProgress: action.isFetching ? [...state.followingInProgress, action.userId]
-                : state.followingInProgress.filter(id => id != action.userId)
+                : state.followingInProgress.filter(id => id !== action.userId)
             }
         default:
             return state
@@ -58,5 +60,36 @@ export const setPage = (page) => ({type: setPageAC, page})
 export const setTotal = (total) => ({type: setTotalAC, total})
 export const toggleFollowingProgress = (isFetching, userId) => 
 ({type: following_in_progress, isFetching, userId})
+
+
+export const getUsers = (currentPage, pageSize) => {
+    return (dispatch) => {
+        userAPI.getUsers(currentPage, pageSize).then(data => {
+            dispatch(setUsers(data.items));
+            dispatch(setTotal(data.totalCount));
+}) 
+}}
+
+export const setFollowing = (userId) => {
+    return (dispatch) => {
+        dispatch(toggleFollowingProgress(true, userId));
+        userAPI.getFollow(userId).then(data => {
+            if (data.resultCode === 0) {
+                dispatch(follow(userId))
+            }
+            dispatch(toggleFollowingProgress(false, userId))
+    })
+}}
+
+export const setUnfollowing = (userId) => {
+    return (dispatch) => {
+        dispatch(toggleFollowingProgress(true, userId));
+        userAPI.getUnfollow(userId).then(data => {
+            if (data.resultCode === 0) {
+                dispatch(unfollow(userId))
+            }
+            dispatch(toggleFollowingProgress(false, userId))
+    })
+}}
 
 export default usersReducer

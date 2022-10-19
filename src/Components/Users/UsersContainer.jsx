@@ -1,29 +1,25 @@
 import React from 'react'
-import { follow, unfollow, setUsers, setPage, setTotal, toggleFollowingProgress} from '../../Redux/usersReducer'
+import { setPage, getUsers, setFollowing, setUnfollowing} from '../../Redux/usersReducer'
 import Users from './Users'
 import {connect} from 'react-redux'
-import {userAPI }from '../../api/usersAPI'
 
 
 class UsersAPI extends React.Component {
 
     componentDidMount() {
-        userAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-                this.props.setUsers(data.items);
-                this.props.setTotal(data.totalCount)
-        })    
+
+        this.props.getUsers(this.props.currentPage, this.props.pageSize)  
 }
     changePages = (p) => {
-        this.props.setPage(p);
-        userAPI.getUsers(p, this.props.pageSize).then(data => {
-        this.props.setUsers(data.items)
-        })}
 
+        this.props.setPage(p);
+        this.props.getUsers(p, this.props.pageSize)
+    }
 
     render() {
         return (
         <div>
-            <Users {...this.props}/>
+            <Users {...this.props} changePages={this.changePages} />
         </div>)
     }}
 
@@ -38,6 +34,7 @@ let mapStateToProps = (state) => {
     }}
 
 const UsersContainer = connect(mapStateToProps,{
-    follow, unfollow, setUsers, setPage, setTotal, toggleFollowingProgress})(UsersAPI);
+    setFollowing, setUnfollowing,
+    setPage, getUsers})(UsersAPI);
 
 export default UsersContainer 

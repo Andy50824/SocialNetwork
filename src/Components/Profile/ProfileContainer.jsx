@@ -1,23 +1,18 @@
 import React from 'react'
 import Profile from './Profile';
-import axios from 'axios';
-import {setProfile} from '../../Redux/profileReducer'
+import {getProfile} from '../../Redux/profileReducer'
 import {connect} from 'react-redux'
-import { useParams } from "react-router-dom"
-import {userAPI} from '../../api/usersAPI';
+import { useParams, Navigate } from "react-router-dom"
+import {withAuthRedirect} from '../../Hok/withAuthRedirect'
 
 class ProfileContainer extends React.Component {
   componentDidMount() {
-    
-    let user = this.props.match.params.userId
-    userAPI.getUser(user).then(  
-      data => {
-        this.props.setProfile(data)
-      }
-    )
-  }
 
+    this.props.getProfile(this.props.match.params.userId)
+  }
+  
   render () {
+    
     return (
       <div>
         <Profile {...this.props} />
@@ -25,9 +20,11 @@ class ProfileContainer extends React.Component {
     )
   }}
 
+let AuthRedirectComponent = withAuthRedirect(ProfileContainer)
+
 let mapStateToProps = (state) => {
   return {
-    profile: state.profilePage.profile
+    profile: state.profilePage.profile,
   }
 }
 
@@ -38,4 +35,4 @@ export function withRouter(Children) {
     }
 }
 
-export default connect (mapStateToProps, {setProfile})(withRouter(ProfileContainer))
+export default connect (mapStateToProps, {getProfile})(withRouter(AuthRedirectComponent))
