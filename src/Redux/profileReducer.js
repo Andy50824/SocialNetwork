@@ -1,8 +1,9 @@
-import { userAPI } from "../api/usersAPI";
+import { profileAPI } from "../api/usersAPI";
 
 const addPost = 'ADD-POST'
 const updatePost = 'UPDATE-POST'
 const set_profile = 'set-profile'
+const set_status = 'set-status'
 
 let initialState = {
     postData: [
@@ -12,6 +13,7 @@ let initialState = {
     ],
     newPostText: '',
     profile: null,
+    userStatus: '',
     
 };
 
@@ -37,21 +39,44 @@ const profileReducer = (state = initialState, action) => {
             return {...state,
                 profile: action.profile};
 
+        case set_status:
+            return {...state,
+                userStatus: action.userStatus}
+
         default:
             return state
 }}
 
 export const addPostCreate = () => ({type: addPost})
 export const setProfile = (profile) => ({type: set_profile, profile})
+export const setStatus = (userStatus) => ({type: set_status, userStatus})
 export const updatePostCreate = (text) => ({
     type: updatePost, updateData: text})
 
 export const getProfile = (user) => {
     return (dispatch) => {
-        userAPI.getUser(user).then(  
+        profileAPI.getUser(user).then(  
             data => {
                 dispatch(setProfile(data))
             })
     }}
+
+export const getStatus = (userId) => {
+    return (dispatch) => {
+        profileAPI.getStatus(userId).then(  
+            data => {
+                dispatch(setStatus(data))
+            })
+    }}
+
+export const updateStatus = (status) => {
+    return (dispatch) => {
+        profileAPI.updateStatus(status).then(  
+            data => {
+                if(data.resultCode === 0) {
+                    dispatch(setStatus(status))}
+            })
+    }}
+   
 
 export default profileReducer
