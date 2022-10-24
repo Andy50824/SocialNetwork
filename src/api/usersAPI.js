@@ -17,17 +17,13 @@ export const userAPI = {
        return instance.get('profile/' + user).then(response => response.data)
     },
 
-    getAuth(){
-        return instance.get('auth/me').then(response => response.data)
-    },
-
     getFollow(id) {
         return instance.post('follow/' + id).then(response => response.data)
     },
 
     getUnfollow(id) {
         return instance.delete('follow/' + id).then(response => response.data)
-    }
+    },
 }
 
 export const profileAPI = {
@@ -43,5 +39,17 @@ export const profileAPI = {
     updateStatus(status) {
         return instance.put('profile/status', {status}).then(response => response.data)
     }
+}
 
+export const authAPI = {
+    getAuth(){
+        return instance.get('auth/me')
+    },
+    getLogin(email, password, rememberMe) {
+        return instance.post('auth/login', {email, password, rememberMe}).then(
+            response => response.data)
+    },
+    getLogout() {
+        return instance.delete('auth/login').then(response => response.data)
+    }
 }

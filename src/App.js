@@ -7,15 +7,26 @@ import { Route, Routes } from 'react-router-dom';
 import DialogsContainer from './Components/Dialogs/DialogsContainer';
 import UsersContainer from './Components/Users/UsersContainer';
 import Login from './Components/Login/Login';
+import { connect } from 'react-redux';
+import {initializeApp} from './Redux/appReducer'
 
 
-const App = (props) => {
+class App extends React.Component {
+
+  componentDidMount() {
+    this.props.initializeApp()
+}
+
+  render() {
+    if (!this.props.initialStatus) {
+      return <div></div>}
+
     return (
       <div className='app-wrapper'>
           <div className='app-wrapper-header'>
           < HeaderContainer />
           </div>
-          < Navbar friendsData={props.store.getState().navPage.friendsData} />
+          < Navbar friendsData={this.props.store.getState().navPage.friendsData} />
           <div className='app-wrapper-content'>
             <Routes>
               <Route path='/profile/' element={<ProfileContainer/>} />
@@ -28,6 +39,10 @@ const App = (props) => {
       </div>
       
     );
-  }
+  }}
 
-export default App;
+  const mapStateToProps = (state) => ({
+    initialStatus: state.app.initialStatus
+})
+
+export default connect(mapStateToProps, {initializeApp})(App);

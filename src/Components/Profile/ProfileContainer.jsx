@@ -3,22 +3,22 @@ import Profile from './Profile';
 import {getProfile, getStatus, updateStatus} from '../../Redux/profileReducer'
 import {connect} from 'react-redux'
 import { useParams} from "react-router-dom"
-import {withAuthRedirect} from '../../Hok/withAuthRedirect'
 import {compose} from 'redux'
+import {withAuthRedirect} from '../../Hok/withAuthRedirect'
 
 class ProfileContainer extends React.Component {
   componentDidMount() {
     let userId = this.props.match.params.userId
+
     if (!userId) {
-      userId = 26231
+      userId = this.props.authUserId
     }
+    
     this.props.getProfile(userId)
     this.props.getStatus(userId)
-    
-  }
+   }
   
   render () {
-    
     return (
       <div>
         <Profile {...this.props} />
@@ -30,7 +30,9 @@ let mapStateToProps = (state) => {
   return {
     profile: state.profilePage.profile,
     userStatus: state.profilePage.userStatus,
-  }
+    authUserId: state.auth.userId,
+    isAuth: state.auth.isAuth,
+    }
 }
 
 export function withRouter(Children) {
@@ -42,6 +44,6 @@ export function withRouter(Children) {
 
 export default compose(
                       withRouter,
-                      connect(mapStateToProps, {getProfile,getStatus, updateStatus}),
-                      //withAuthRedirect
+                      connect(mapStateToProps, {getProfile, getStatus, updateStatus}),
+                      withAuthRedirect
                     )(ProfileContainer)
