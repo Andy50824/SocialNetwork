@@ -22,7 +22,7 @@ class ProfileStatus extends React.Component {
 
     updateMyStatus = (e) => {
         this.setState({
-            status: e.currentTarget.value
+            status: e.target.value
         })
     }
 
