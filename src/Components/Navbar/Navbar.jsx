@@ -37,7 +37,7 @@ const Navbar = (props) => {
             <div>
               <img></img>
               <div>
-                {props.friendsData.map(f => <Friend name={f.name} img={f.img} />)}
+                {props.friendsData.map(f => <Friend name={f.name} img={f.img} key={f.id} />)}
               </div>
             </div>
           </div>

@@ -16,10 +16,10 @@ const Dialogs = (props) => {
     }
 
     let dialogsItems = props.dialogsData
-    .map(d => <DialogsItem name={d.name} id={d.id} /> )
+    .map(d => <DialogsItem name={d.name} id={d.id} key={d.id} /> )
 
     let messageItems = props.messageData
-        .map(m => <DialogsMessage message={m.message}/>)
+        .map(m => <DialogsMessage message={m.message} key={m.id}/>)
 
 
     return (
